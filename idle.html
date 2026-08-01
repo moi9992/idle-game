@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>idle</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <button class="objectif" id="objectif">Objectifs</button>
+    <div class="modal_objectif_principale" id="modal_objectif_principale">
+        <button class="fermer1" id="fermer1">Fermer</button>
+            <p>Objectif 1 : Collecter 1 000 000 de pierres pour débloquer le monde 2</p>
+            <p>Objectif 2 : Collecter 1 000 000 d'argent pour débloquer le monde 3</p> <!-- modification du texte de l'objectif 2 pour refléter le changement de ressource -->
+            <p>Objectif 3 : Collecter 1 000 000 d'antimatière pour débloquer le monde 4</p> <!-- modification du texte de l'objectif 3 pour refléter le changement de ressource -->
+    </div>
+
+    <button class="quete" id="quete">Quêtes</button>
+    <div class="modal_quete" id="modal_quete">
+        <button class="fermer2" id="fermer2">Fermer</button>
+        <p id="p_quete1">Quête 1 : Collecter 1 000 pierres</p>
+        <button class="btn_quete1" id="quete1">Quête 1</button>
+        <p id="p_quete2">Quête 2 : Cliquer 100 fois</p>
+        <button class="btn_quete2" id="quete2">Quête 2</button>
+        <p id="p_quete3">Quête 3 : Acheter 10 générateurs</p>
+        <button class="btn_quete3" id="quete3">Quête 3</button>
+    </div>
+
+    <button class="stat" id="stat">Statistiques</button>
+    <div class="modal_stat" id="modal_stat">
+            <button class="fermer" id="fermer">Fermer</button>
+            <p>Statistiques du jeu</p>
+            <p>Pierres collectées : <span id="stat_pierres">0</span></p>
+            <p>Argent collecté : <span id="stat_argent">0</span></p>
+            <p>Antimatière collectée : <span id="stat_antimatière">0</span></p>
+            <p>Clics effectués : <span id="stat_clicks">0</span></p>
+            <p>Temps de jeu : <span id="stat_temps_jours">0</span> jours <span id="stat_temps_heures">0</span> heures <span id="stat_temps_minutes">0</span> minutes <span id="stat_temps_secondes">0</span> secondes</p>
+    </div>
+
+    <button class="zone_upgrade" id="zone_upgrade">upgrade</button>
+    <div class="modal_upgrade" id="modal_upgrade">
+            <button class="fermer3" id="fermer3">fermer</button>
+            <button class="upgrade_click_1" id="upgrade_click_1">Upgrade clic (50 pierres)</button>
+            <button class="upgrade_gen_1" id="upgrade_gen_1">Upgrade générateur (200 pierres)</button>
+            <button class="auto_click_1" id="auto_click_1">auto click (100 pierres)</button>
+    </div>
+
+    <div class="monde" id="monde1">Monde 1
+        <div class="pierre" id="1"></div>
+        <div class="prod_sec1" id="prod_sec_1">pierre par seconde</div>
+        <button id="button1">clique </button>
+        <button class="generateur" id="gen_1">generateur</button>
+        <div class="gen-info">Générateurs : <span id="genNombre">0</span></div>
+        <button class="debloque_monde_2" id="debloque_monde_2">débloque le monde 2</button>
+    </div>
+
+    <div class="monde" id="monde2">Monde 2
+        <div class="argent" id="2"></div>
+        <div class="prod_sec2" id="prod_sec_2">argent par seconde</div>
+        <button id="button2">clique</button>
+        <button class="generateur" id="gen_2">generateur</button>
+        <button class="debloque_monde_3" id="debloque_monde_3">débloque le monde 3</button>
+    </div>
+
+    <div class="monde" id="monde3">Monde 3
+        <div class="antimatière" id="3"></div>
+        <div class="prod_sec3" id="prod_sec_3">antimatière par seconde</div>
+        <button id="button3">clique</button>
+        <button class="generateur" id="gen_3">generateur</button>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

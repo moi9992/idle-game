@@ -1,0 +1,224 @@
+ * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: #1a1a2e;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .monde {
+        width: 280px;
+        padding: 30px;
+        border-radius: 12px;
+        margin: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    #monde1 {
+        background: #3d2b1f;
+        border: 2px solid #8B6914;
+        color: #d4a843;
+    }
+
+    #monde2 {
+        background: #1f2d3d;
+        border: 2px solid #4a90d9;
+        color: #a8c8e8;
+    }
+
+    #monde3 {
+        background: #1a0f2e;
+        border: 2px solid #9b59b6;
+        color: #d7b8f3;
+    }
+
+    .pierre, .argent, .antimatière {
+        font-size: 2rem;
+        font-weight: bold;
+        min-height: 40px;
+    }
+
+    button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: transform 0.1s;
+        width: 100%;
+    }
+
+    button:active {
+        transform: scale(0.95);
+    }
+
+    #button1 { background: #8B6914; color: white; }
+    #button2 { background: #4a90d9; color: white; }
+    #button3 { background: #9b59b6; color: white; }
+
+    .generateur {
+        background: #2ecc71;
+        color: white;
+        font-size: 0.9rem;
+    }
+
+    #monde2, #monde3 {
+        display: none
+    }
+
+    .debloque_monde_2, .debloque_monde_3 {
+        display : none
+    }
+
+    .upgrade_click_1 {
+        display : none
+    }
+
+    .upgrade_gen_1 {
+        display : none
+    }
+
+    #auto_click_1 {
+        display : none
+    }
+
+    #modal_stat {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+    }
+
+    #stat {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        width: fit-content;
+    }
+
+    #modal_objectif_principale {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+    }
+
+    #objectif {
+        position: fixed;
+        top: 20px;
+        right: 150px;
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        width: fit-content;
+    }
+
+    #modal_quete {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+    }
+
+    #quete {
+        position: fixed;
+        top: 20px;
+        right: 260px;
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        width: fit-content;
+    }
+
+    #quete1, #quete2, #quete3 { 
+        display: none;
+    }
+
+    .gen-info {
+    font-size: 0.85rem;
+    text-align: center;
+    }
+
+    .zone_upgrade {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 220px;
+    }
+
+    #zone_upgrade {
+    position: fixed;
+    top: 20px;
+    right: 380px;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    width: fit-content;
+    }
+
+#modal_upgrade {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    flex-direction: column;
+    gap: 10px;
+}
