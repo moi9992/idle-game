@@ -43,6 +43,26 @@ function fermerToutesLesModals() {
     })
 }
 
+function sauvegarderJeu() {
+    const sauvegarde = {pierreCount, pierreGen, pierreGenCout, cursorAuto, cursorAutoCout}
+    const sauvegardeTexte = JSON.stringify(sauvegarde)
+    localStorage.setItem('idleGameSave', sauvegardeTexte)
+}
+
+function chargerJeu() {
+    const sauvegardeLoad = localStorage.getItem('idleGameSave') 
+    if(sauvegardeLoad !== null) {
+        const sauvegardeLoadJSON = JSON.parse(sauvegardeLoad)
+        pierreCount = sauvegardeLoadJSON.pierreCount
+        pierreGen = sauvegardeLoadJSON.pierreGen
+        pierreGenCout = sauvegardeLoadJSON.pierreGenCout
+        cursorAuto = sauvegardeLoadJSON.cursorAuto
+        cursorAutoCout = sauvegardeLoadJSON.cursorAutoCout
+    }
+}
+
+chargerJeu()
+
 document.getElementById('button1').addEventListener('click', () => {
     pierreCount += pierreClickBonus
     pierre.innerText = pierreCount
@@ -274,3 +294,7 @@ document.getElementById('zone_upgrade').addEventListener('click', () => {
 document.getElementById('fermer3').addEventListener('click', () => {
     modalUpgrade.style.display = 'none'
 })
+
+setInterval(() => {
+    sauvegarderJeu()
+}, 10000)
