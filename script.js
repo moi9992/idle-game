@@ -8,6 +8,7 @@ const modalObjectifPrincipal = document.getElementById('modal_objectif_principal
 const modalQuete = document.getElementById('modal_quete')
 const modalUpgrade = document.getElementById('modal_upgrade')
 const modals = [modalStat, modalObjectifPrincipal, modalQuete, modalUpgrade]
+const seuil = 11 
 
 let pierreCount = 0
 let argentCount = 0 
@@ -36,6 +37,10 @@ let quete1Complete = false
 let quete2Complete = false
 let quete3Complete = false
 let bonusTotal = 1
+let cps = []
+let stamina = 100 
+let dernierClic = Date.now()
+let dernierTickStamina = Date.now()
 
 function fermerToutesLesModals() {
     modals.forEach (modal => {
@@ -64,11 +69,34 @@ function chargerJeu() {
 chargerJeu()
 
 document.getElementById('button1').addEventListener('click', () => {
-    pierreCount += pierreClickBonus
-    pierre.innerText = pierreCount
-    stat_pierres.innerText = pierreTotal += pierreClickBonus
     clickTotal += 1
     document.getElementById('stat_clicks').innerText = clickTotal
+    cps.push(Date.now())
+    cps = cps.filter(element => {
+        return Date.now() - element < 1000
+    })
+    const cpsActuel = cps.length
+    console.log(cpsActuel)
+    if(cpsActuel > seuil) {
+        let depassement = cpsActuel - seuil 
+        stamina -= depassement 
+    }
+    if(stamina <= 0) {
+        stamina = 0
+    }
+    let multiGain = 0
+    if(stamina > 50) {
+        multiGain = stamina / 100 
+    } else {
+        let malusGain = 50 - stamina 
+        let gainPerdu = malusGain * 0.3 
+        multiGain = (50 - gainPerdu) / 100 
+    }
+    pierreCount += pierreClickBonus * multiGain
+    stat_pierres.innerText = pierreTotal += pierreClickBonus * multiGain
+    dernierClic = Date.now()
+    document.getElementById('staminaNombre').innerText = Math.floor(stamina)
+    pierre.innerText = Math.floor(pierreCount)
 })
 
 document.getElementById('button2').addEventListener('click', () => {
@@ -298,3 +326,19 @@ document.getElementById('fermer3').addEventListener('click', () => {
 setInterval(() => {
     sauvegarderJeu()
 }, 10000)
+
+setInterval(() => {
+    let tempPasser = Date.now() - dernierTickStamina
+    dernierTickStamina = Date.now()
+    let regenStamina = tempPasser * 0.005
+    if(Date.now() - dernierClic > 2000){
+        stamina += regenStamina
+    }
+    if(stamina >= 100) {
+    stamina = 100    
+    }
+    if(stamina <= 0) {
+        stamina = 0
+    }
+    document.getElementById('staminaNombre').innerText = Math.floor(stamina)
+}, 1000)
