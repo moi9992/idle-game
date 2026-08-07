@@ -36,6 +36,7 @@
             <p>Antimatière collectée : <span id="stat_antimatière">0</span></p>
             <p>Clics effectués : <span id="stat_clicks">0</span></p>
             <p>Temps de jeu : <span id="stat_temps_jours">0</span> jours <span id="stat_temps_heures">0</span> heures <span id="stat_temps_minutes">0</span> minutes <span id="stat_temps_secondes">0</span> secondes</p>
+            <button class="reset" id="reset">nouvelle partie</button>
     </div>
 
     <button class="zone_upgrade" id="zone_upgrade">upgrade</button>
@@ -46,6 +47,12 @@
             <button class="auto_click_1" id="auto_click_1">auto click (100 pierres)</button>
     </div>
 
+    <button class="turbo" id="turbo">turbo</button>
+    <div class="modal_turbo" id="modal_turbo">
+        <button class="fermer4" id="fermer4">fermer</button>
+        <button class="turboActive" id="turboActive">activer le turbo</button>
+    </div>
+
     <div class="monde" id="monde1">Monde 1
         <div class="pierre" id="1"></div>
         <div class="prod_sec1" id="prod_sec_1">pierre par seconde</div>
@@ -54,6 +61,8 @@
         <div class="gen-info">Générateurs : <span id="genNombre">0</span></div>
         <button class="debloque_monde_2" id="debloque_monde_2">débloque le monde 2</button>
         <div class="stamina_bar" id="stamina-bar">stamina : <span id="staminaNombre">0</span></div>
+        <div class="turboEtat" id="turboEtat">turbo : <span id="turbo_stade">inactif</span></div>
+        <button class="turboDesactive" id="turboDesactive">désactiver le turbo</button>
     </div>
 
     <div class="monde" id="monde2">Monde 2

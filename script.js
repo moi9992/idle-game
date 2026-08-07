@@ -7,8 +7,11 @@ const fermerBtn = document.querySelector('.fermer')
 const modalObjectifPrincipal = document.getElementById('modal_objectif_principale')
 const modalQuete = document.getElementById('modal_quete')
 const modalUpgrade = document.getElementById('modal_upgrade')
-const modals = [modalStat, modalObjectifPrincipal, modalQuete, modalUpgrade]
+const modalTurbo = document.getElementById('modal_turbo')
+const modals = [modalStat, modalObjectifPrincipal, modalQuete, modalUpgrade, modalTurbo]
 const seuil = 11 
+const turboStade = document.getElementById('turbo_stade')
+const turboDesactive = document.getElementById('turboDesactive')
 
 let pierreCount = 0
 let argentCount = 0 
@@ -39,13 +42,28 @@ let quete3Complete = false
 let bonusTotal = 1
 let cps = []
 let stamina = 100 
+let staminaMax = 100 
 let dernierClic = Date.now()
 let dernierTickStamina = Date.now()
+let turboActif = false 
+let drainTurbo = 0.05 
+let bonusTurbo = 0.20 
+let multiTurbo = 1
 
 function fermerToutesLesModals() {
     modals.forEach (modal => {
         modal.style.display = 'none'
     })
+}
+
+function updateTurbo() {
+    if(turboActif) {
+        turboStade.innerText = 'actif'
+        turboDesactive.style.display = 'block'
+    } else {
+        turboStade.innerText = 'inactif'
+        turboDesactive.style.display = 'none'
+    }
 }
 
 function sauvegarderJeu() {
@@ -92,8 +110,8 @@ document.getElementById('button1').addEventListener('click', () => {
         let gainPerdu = malusGain * 0.3 
         multiGain = (50 - gainPerdu) / 100 
     }
-    pierreCount += pierreClickBonus * multiGain
-    stat_pierres.innerText = pierreTotal += pierreClickBonus * multiGain
+    pierreCount += pierreClickBonus * multiGain * multiTurbo
+    stat_pierres.innerText = pierreTotal += pierreClickBonus * multiGain * multiTurbo
     dernierClic = Date.now()
     document.getElementById('staminaNombre').innerText = Math.floor(stamina)
     pierre.innerText = Math.floor(pierreCount)
@@ -116,15 +134,15 @@ document.getElementById('gen_1').addEventListener('click', () => {
         pierreGen++
         pierreCount -= pierreGenCout 
         pierreGenCout *= 2 
-        pierre.innerText = pierreCount
+        pierre.innerText = Math.floor(pierreCount)
         document.getElementById('genNombre').innerText = pierreGen
         document.getElementById('gen_1').innerText= `next générateur (${pierreGenCout} pierres)`
     }
 })
 
 setInterval(() => {
-            pierreCount += (pierreGen * genBonusCout + cursorAuto * pierreClickBonus) * bonusTotal
-            pierreTotal += (pierreGen * genBonusCout + cursorAuto * pierreClickBonus) * bonusTotal
+            pierreCount += (pierreGen * genBonusCout + cursorAuto * pierreClickBonus) * bonusTotal * multiTurbo
+            pierreTotal += (pierreGen * genBonusCout + cursorAuto * pierreClickBonus) * bonusTotal * multiTurbo
             stat_pierres.innerText = pierreTotal
             pierre.innerText = Math.floor(pierreCount)
             if(pierreCount >= 1000000) {
@@ -162,7 +180,7 @@ setInterval(() => {
             }
             document.getElementById('genNombre').innerText = pierreGen
             document.getElementById('gen_1').innerText= `next générateur (${pierreGenCout} pierres)`
-            prod1.innerText = `${pierreGen * genBonusCout + cursorAuto * pierreClickBonus} pierre par seconde`
+            prod1.innerText = `${Math.floor((pierreGen * genBonusCout + cursorAuto * pierreClickBonus) * multiTurbo)} pierre par seconde`
         }, 1000)
 
 document.getElementById('gen_2').addEventListener('click', () => {
@@ -331,14 +349,63 @@ setInterval(() => {
     let tempPasser = Date.now() - dernierTickStamina
     dernierTickStamina = Date.now()
     let regenStamina = tempPasser * 0.005
-    if(Date.now() - dernierClic > 2000){
+    if(Date.now() - dernierClic > 2000 && !turboActif){
         stamina += regenStamina
     }
-    if(stamina >= 100) {
-    stamina = 100    
+    if(stamina >= staminaMax) {
+    stamina = staminaMax    
     }
     if(stamina <= 0) {
         stamina = 0
     }
     document.getElementById('staminaNombre').innerText = Math.floor(stamina)
 }, 1000)
+
+document.getElementById('fermer4').addEventListener('click', () => {
+    modalTurbo.style.display = 'none'
+})
+
+document.getElementById('turbo').addEventListener('click', () => {
+    if(modalTurbo.style.display === 'flex') {
+        modalTurbo.style.display = 'none'
+    } else {
+        fermerToutesLesModals()
+        modalTurbo.style.display = 'flex'
+    }
+})
+
+document.getElementById('turboActive').addEventListener('click', () => {
+    if(turboActif === false) {
+        turboActif = true 
+    } else if (turboActif === true) {
+        turboActif = false
+    }
+    updateTurbo()
+    modalTurbo.style.display = 'none'
+})
+
+setInterval(() => {
+    if(turboActif) {
+        multiTurbo = 1 + bonusTurbo
+        let drainStamina = drainTurbo * staminaMax
+        stamina -= drainStamina
+        document.getElementById('staminaNombre').innerText = Math.floor(stamina)
+        if(stamina <= 0) {
+        stamina = 0
+        turboActif = false
+        }
+        updateTurbo()
+    } else {
+        multiTurbo = 1 
+    }
+}, 1000)
+
+document.getElementById('turboDesactive').addEventListener('click', () => {
+    turboActif = false 
+    updateTurbo()
+})
+
+document.getElementById('reset').addEventListener('click', () => {
+    localStorage.removeItem('idleGameSave')
+    location.reload()
+})
