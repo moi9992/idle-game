@@ -12,6 +12,28 @@ const modals = [modalStat, modalObjectifPrincipal, modalQuete, modalUpgrade, mod
 const seuil = 11 
 const turboStade = document.getElementById('turbo_stade')
 const turboDesactive = document.getElementById('turboDesactive')
+const quete1 = {
+    texte: 'Récolte 1000 pierres',
+    condition: () => pierreTotal >= 1000,
+    recompense: () => { pierreClickBonus++ },
+    complete: false,
+    vague: 1 
+}
+const quete2 = {
+    texte: 'Cliquer 100 fois',
+    condition: () => clickTotal >= 100,
+    recompense: () => { cursorAuto++ },
+    complete: false,
+    vague: 1
+}
+const quete3 = {
+    texte: 'acheter 10 générateurs',
+    condition: () => pierreGen >= 1,
+    recompense: () => { pierreGen++ }, 
+    complete: false,
+    vague: 1
+}
+const quetes = [quete1, quete2, quete3]
 
 let pierreCount = 0
 let argentCount = 0 
@@ -36,9 +58,6 @@ let stat_antimatière = document.getElementById('stat_antimatière')
 let pierreTotal = 0
 let clickTotal = 0
 let TempJeu = 0
-let quete1Complete = false
-let quete2Complete = false
-let quete3Complete = false
 let bonusTotal = 1
 let cps = []
 let stamina = 100 
@@ -49,6 +68,8 @@ let turboActif = false
 let drainTurbo = 0.05 
 let bonusTurbo = 0.20 
 let multiTurbo = 1
+let compteurCoupureTurbo = 0 
+let vagueActuelle = 1 
 
 function fermerToutesLesModals() {
     modals.forEach (modal => {
@@ -84,7 +105,34 @@ function chargerJeu() {
     }
 }
 
+function afficherQuetes() {
+    const zone = document.getElementById('zone_quetes')
+    zone.innerHTML = ''
+    quetes.forEach(quete => {
+        if(quete.vague === vagueActuelle && !quete.complete) {
+            const queteTexte = document.createElement('p')
+            queteTexte.innerText = quete.texte
+            zone.appendChild(queteTexte)
+            if(quete.condition()) {
+                const elementBoutton = document.createElement('button')
+                elementBoutton.innerText = `Valider ${quete.texte}`
+                zone.appendChild(elementBoutton)
+                elementBoutton.addEventListener('click', () =>{
+                quete.recompense()
+                quete.complete = true
+                let vagueTerminer = quetes.every(quete => quete.vague !== vagueActuelle || quete.complete)
+                if(vagueTerminer) {
+                    vagueActuelle++
+                }
+                afficherQuetes()
+            })   
+        }
+        }
+    })
+}
+
 chargerJeu()
+afficherQuetes()
 
 document.getElementById('button1').addEventListener('click', () => {
     clickTotal += 1
@@ -111,7 +159,7 @@ document.getElementById('button1').addEventListener('click', () => {
         multiGain = (50 - gainPerdu) / 100 
     }
     pierreCount += pierreClickBonus * multiGain * multiTurbo
-    stat_pierres.innerText = pierreTotal += pierreClickBonus * multiGain * multiTurbo
+    stat_pierres.innerText = Math.floor(pierreTotal += pierreClickBonus * multiGain * multiTurbo)
     dernierClic = Date.now()
     document.getElementById('staminaNombre').innerText = Math.floor(stamina)
     pierre.innerText = Math.floor(pierreCount)
@@ -143,7 +191,7 @@ document.getElementById('gen_1').addEventListener('click', () => {
 setInterval(() => {
             pierreCount += (pierreGen * genBonusCout + cursorAuto * pierreClickBonus) * bonusTotal * multiTurbo
             pierreTotal += (pierreGen * genBonusCout + cursorAuto * pierreClickBonus) * bonusTotal * multiTurbo
-            stat_pierres.innerText = pierreTotal
+            stat_pierres.innerText = Math.floor(pierreTotal)
             pierre.innerText = Math.floor(pierreCount)
             if(pierreCount >= 1000000) {
                 document.getElementById('debloque_monde_2').style.display = 'block'
@@ -165,18 +213,6 @@ setInterval(() => {
             }
             if(pierreCount < genUpgradeCout) {
                 document.getElementById('upgrade_gen_1').style.display = 'none'
-            }
-            if(pierreTotal >= 1000 && !quete1Complete) {
-                document.getElementById('quete1').style.display = 'block'
-            }
-            if(clickTotal >= 100 && !quete2Complete) {
-                document.getElementById('quete2').style.display = 'block'
-            }
-            if(pierreGen >= 10 && !quete3Complete) {
-                document.getElementById('quete3').style.display = 'block'
-            }
-            if(quete1Complete && quete2Complete && quete3Complete) {
-                bonusTotal = 1.05
             }
             document.getElementById('genNombre').innerText = pierreGen
             document.getElementById('gen_1').innerText= `next générateur (${pierreGenCout} pierres)`
@@ -294,6 +330,7 @@ document.getElementById('quete').addEventListener('click', () => {
     } else {
         fermerToutesLesModals()
         modalQuete.style.display = 'block'
+        afficherQuetes()
     }
 })
 
@@ -301,32 +338,6 @@ document.getElementById('fermer2').addEventListener('click', () => {
     modalQuete.style.display = 'none'
 })
 
-document.getElementById('quete1').addEventListener('click', () => {
-    if(pierreTotal >= 1000) {
-        quete1Complete = true
-        document.getElementById('quete1').style.display = 'none'
-        pierreClickBonus++
-        document.getElementById('p_quete1').style.color = 'green'
-    }
-})
-
-document.getElementById('quete2').addEventListener('click', () => {
-    if(clickTotal >= 100) {
-        quete2Complete = true
-        document.getElementById('quete2').style.display = 'none'
-        document.getElementById('p_quete2').style.color = 'green'
-        cursorAuto++
-    }
-})
-
-document.getElementById('quete3').addEventListener('click', () => {
-    if(pierreGen >= 1) {
-        quete3Complete = true
-        document.getElementById('quete3').style.display = 'none'
-        document.getElementById('p_quete3').style.color = 'green'
-        pierreGen++
-    }
-})
 
 document.getElementById('zone_upgrade').addEventListener('click', () => {
     if(modalUpgrade.style.display === 'flex') {
@@ -401,6 +412,9 @@ setInterval(() => {
 }, 1000)
 
 document.getElementById('turboDesactive').addEventListener('click', () => {
+    if(stamina < 0.20 * staminaMax) {
+        compteurCoupureTurbo++
+    }
     turboActif = false 
     updateTurbo()
 })
